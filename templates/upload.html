@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SEEFOOD</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div class="container">
+            <h1>SEEFOOD</h1>
+            <div id="previewContainer">
+                <img id="imagePreview" style="max-width: 500px; max-height: 500px; display: none;"/>
+                <div id="evaluatingMessage" class="overlay" style="display: none;">
+                    <div class="spinner"></div>
+                    Evaluating...
+                </div>
+            </div>
+            <div id="predictionResult"></div>
+            <button type="button" onclick="classifyImage()">Classify</button>
+            <form id="uploadForm" enctype="multipart/form-data">
+                <input type="file" name="image" accept="image/*" onchange="previewImage(event)">
+            </form>
+        </div>
+
+        <script>
+            function previewImage(event) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('imagePreview');
+                    output.src = reader.result;
+                    output.style.display = 'block';
+                    document.getElementById('predictionResult').innerText = ''; // Clear previous results
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            }
+
+            function classifyImage() {
+                var imagePreview = document.getElementById('imagePreview');
+                var evaluatingMessage = document.getElementById('evaluatingMessage');
+                var formData = new FormData(document.getElementById('uploadForm'));
+
+                // Show the spinner and message, apply blur to image
+                evaluatingMessage.style.display = 'flex';
+                imagePreview.classList.add('blur');
+
+                fetch('/classify', {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json()).then(data => {
+                    // Hide the spinner and message, remove blur from image
+                    setTimeout(function() { // Add a delay before hiding the message
+                        evaluatingMessage.style.display = 'none';
+                        imagePreview.classList.remove('blur');
+
+                        var predictionResult = document.getElementById('predictionResult');
+                        predictionResult.innerText = data.prediction;
+
+                        // Remove previous classes
+                        predictionResult.classList.remove('prediction-hotdog', 'prediction-nothotdog');
+
+                        // Add class based on prediction
+                        if (data.prediction.toLowerCase() === 'hotdog') {
+                            predictionResult.classList.add('prediction-hotdog');
+                        } else {
+                            predictionResult.classList.add('prediction-nothotdog');
+                        }
+                    }, 2000); // Delay in milliseconds, adjust as needed
+                }).catch(error => {
+                    // Hide the spinner and message, remove blur from image after delay in case of error
+                    setTimeout(function() {
+                        evaluatingMessage.style.display = 'none';
+                        imagePreview.classList.remove('blur');
+                        document.getElementById('predictionResult').innerText = 'Error: ' + error.message;
+                    }, 2000);
+                });
+
+                // Prevent the default form submission
+                event.preventDefault();
+            }
+
+            function hideEvaluationMessage(prediction) {
+                var evaluatingMessage = document.getElementById('evaluatingMessage');
+                var imagePreview = document.getElementById('imagePreview');
+
+                // Hide the spinner and message, remove blur from image
+                evaluatingMessage.style.display = 'none';
+                imagePreview.classList.remove('blur');
+                document.getElementById('predictionResult').innerText = prediction;
+            }
+
+
+        </script>
+    </body>
+</html>
+
+
+

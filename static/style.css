@@ -1,0 +1,104 @@
+body {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding-top: 50px;
+}
+
+.container {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1 {
+    background-color: red;
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+input[type="file"] {
+    margin-top: 20px;
+}
+
+#imagePreview {
+    margin-top: 20px;
+    max-width: 500px;
+    max-height: 500px;
+    display: block; /* Updated */
+    margin-left: auto; /* Updated */
+    margin-right: auto; /* Updated */
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#predictionResult {
+    margin-top: 20px;
+}
+
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, .1);
+    border-radius: 50%;
+    border-top: 4px solid #333;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.blur {
+    filter: blur(5px);
+}
+
+#predictionResult {
+    font-size: 24px;
+    padding: 10px;
+    margin: 20px auto; /* Centered and spaced from the elements */
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    display: block; /* Block-level display */
+    width: fit-content; /* Fit the content width */
+    
+}
+
+.prediction-hotdog {
+    background-color: green;
+}
+
+.prediction-nothotdog {
+    background-color: red;
+}
+
