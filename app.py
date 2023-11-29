@@ -7,7 +7,7 @@ import numpy as np
 import io
 
 app = Flask(__name__)
-model = load_model('model/final_model.h5')  # Update this path to where your model is stored
+model = load_model('model/final_model.h5')  
 
 @app.route('/', methods=['GET'])
 def home():
@@ -21,7 +21,6 @@ def classify_image():
     file = request.files['image']
     img = Image.open(io.BytesIO(file.read()))
 
-    # Resize and preprocess the image
     img = img.resize((224, 224))
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)

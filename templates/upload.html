@@ -38,7 +38,6 @@
                 var evaluatingMessage = document.getElementById('evaluatingMessage');
                 var formData = new FormData(document.getElementById('uploadForm'));
 
-                // Show the spinner and message, apply blur to image
                 evaluatingMessage.style.display = 'flex';
                 imagePreview.classList.add('blur');
 
@@ -46,26 +45,24 @@
                     method: 'POST',
                     body: formData
                 }).then(response => response.json()).then(data => {
-                    // Hide the spinner and message, remove blur from image
-                    setTimeout(function() { // Add a delay before hiding the message
+                    setTimeout(function() { 
                         evaluatingMessage.style.display = 'none';
                         imagePreview.classList.remove('blur');
 
                         var predictionResult = document.getElementById('predictionResult');
                         predictionResult.innerText = data.prediction;
 
-                        // Remove previous classes
+                        
                         predictionResult.classList.remove('prediction-hotdog', 'prediction-nothotdog');
 
-                        // Add class based on prediction
+                        
                         if (data.prediction.toLowerCase() === 'hotdog') {
                             predictionResult.classList.add('prediction-hotdog');
                         } else {
                             predictionResult.classList.add('prediction-nothotdog');
                         }
-                    }, 2000); // Delay in milliseconds, adjust as needed
+                    }, 2000); 
                 }).catch(error => {
-                    // Hide the spinner and message, remove blur from image after delay in case of error
                     setTimeout(function() {
                         evaluatingMessage.style.display = 'none';
                         imagePreview.classList.remove('blur');
@@ -73,7 +70,6 @@
                     }, 2000);
                 });
 
-                // Prevent the default form submission
                 event.preventDefault();
             }
 
@@ -81,7 +77,6 @@
                 var evaluatingMessage = document.getElementById('evaluatingMessage');
                 var imagePreview = document.getElementById('imagePreview');
 
-                // Hide the spinner and message, remove blur from image
                 evaluatingMessage.style.display = 'none';
                 imagePreview.classList.remove('blur');
                 document.getElementById('predictionResult').innerText = prediction;
